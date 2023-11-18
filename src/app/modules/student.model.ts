@@ -1,5 +1,5 @@
-import { Schema, model, connect } from 'mongoose';
-import { Guardian, LocalGuardian, Student, Student, UserName } from './students/student.interfacee';
+import { Schema, model } from 'mongoose';
+import { Guardian, LocalGuardian, Student, UserName } from './students/student.interfacee';
 
 
 const UserNameSchema =new Schema<UserName>( {
@@ -40,4 +40,4 @@ const studentSchema = new Schema<Student>({
     profileImg: { type: String },
     isActive:["active","blocked"]
 })
-const Student=model<Student>('Student',studentSchema)
+export const StudentModel=model<Student>('Student',studentSchema)
