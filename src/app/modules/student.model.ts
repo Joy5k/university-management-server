@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import  bcrypt from 'bcrypt';
 import {
   TGuardian,
   TLocalGuardian,
@@ -7,6 +8,7 @@ import {
   StudentModel,
   TUserName,
 } from './students/student.interface';
+import config from '../config';
 
 const UserNameSchema = new Schema<TUserName>({
   firstName: {
@@ -54,6 +56,7 @@ const LocalGuardianSchema = new Schema<TLocalGuardian>({
 
 const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>({
   id: { type: String, required: true, unique: true },
+  password: { type: String, required: true, unique: true },
   name: {
     type: UserNameSchema,
     required: true,
@@ -108,6 +111,16 @@ studentSchema.methods.isUserExists = async function (id: string) {
   const existingUser = await Student.findOne({ id });
   return existingUser;
 };
+// নিচে pre function দিয়ে এটা বোঝাচ্ছে ডাটা ফ্রন্টেন্ড থেকে রিছিফ করা হইছে কিন্তু এখনো ডাটা
+// বেজে  এখনো সেভ হয়নায় এমতাবস্থায়  আছে। এই সুযোগ কাজে লাগিয়ে  ইউজারের কাছে থেকে
+//
+studentSchema.pre('save', async function (next) {
+   // eslint-disable-next-line @typescript-eslint/no-this-alias
+   const user=this
+  user.password = await bcrypt.hash(user.password, Number(config.bcrypt_salt_rounds))
+ next()
+})
+studentSchema.post('save', function () { 
 
-
+})
 export const Student = model<TStudent, StudentModel>('Student', studentSchema);
