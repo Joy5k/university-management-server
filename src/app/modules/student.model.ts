@@ -56,7 +56,7 @@ const LocalGuardianSchema = new Schema<TLocalGuardian>({
 
 const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>({
   id: { type: String, required: true, unique: true },
-  password: { type: String, required: true, unique: true },
+  password: { type: String, required: true,},
   name: {
     type: UserNameSchema,
     required: true,
@@ -106,6 +106,13 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>({
     enum: ['active', 'blocked'],
     default: 'active',
   },
+  isDeleted: {
+    type:Boolean,
+  }
+}, {
+  toJSON: {
+    virtuals:true,
+  }
 });
 studentSchema.methods.isUserExists = async function (id: string) {
   const existingUser = await Student.findOne({ id });
@@ -113,14 +120,47 @@ studentSchema.methods.isUserExists = async function (id: string) {
 };
 // নিচে pre function দিয়ে এটা বোঝাচ্ছে ডাটা ফ্রন্টেন্ড থেকে রিছিফ করা হইছে কিন্তু এখনো ডাটা
 // বেজে  এখনো সেভ হয়নায় এমতাবস্থায়  আছে। এই সুযোগ কাজে লাগিয়ে  ইউজারের কাছে থেকে
-//
+// password নিয়ে সেই password  database এ hashing করে সেভ করেছি।
+
 studentSchema.pre('save', async function (next) {
    // eslint-disable-next-line @typescript-eslint/no-this-alias
    const user=this
   user.password = await bcrypt.hash(user.password, Number(config.bcrypt_salt_rounds))
  next()
 })
-studentSchema.post('save', function () { 
+
+
+studentSchema.pre('find', function (next) {
+  // console.log(this);
+  this.find({isDeleted:{$ne:true}})
+  next()
+})
+studentSchema.pre('findOne', function (next) {
+
+  this.find({isDeleted:{$ne:true}})
+  next()
+})
+studentSchema.pre('aggregate', function (next) {
+ this.pipeline().unshift({$match:{isDeleted:{$ne:true}}})
+  next()
+})
+// এখানে নিচে একটা নতুন ডাটা তৈরি করে ইউজারকে দেয়া হচ্ছে।এই ডাটা ডাটাবেজে সরাসরি ভাবে নেই
+//নিচের ফাংশন কাজ করবেনা যদিনা তুমি  {
+//   toJSON: {
+//     virtuals:true,
+//   }
+// }
+// মডেলে firstBracket এর আগে না বসাও
+studentSchema.virtual("Fullname").get(function () {
+  return (
+    `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`
+  )
+})
+
+
+studentSchema.post('save', function (doc, next) {
+  doc.password = "";
+  next()
 
 })
 export const Student = model<TStudent, StudentModel>('Student', studentSchema);

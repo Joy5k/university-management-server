@@ -24,8 +24,15 @@ const getSingleStudentFromBD = async (id: string) => {
   const result = await Student.findOne({ id });
   return result;
 };
+const deleteSingleStudentFromBD = async (id: string) => {
+  //নিচে await  এর পরে মডেলকে কল করতে হবে। কেননা মডেলের উপর ভিত্তি করেই ডাটা ক্রিয়েট বা
+  //গেট করবে
+  const result = await Student.updateOne({ id },{isDeleted:true});
+  return result;
+};
 export const StudentServices = {
   createStudentInToDB,
   getAllStudentFromDB,
   getSingleStudentFromBD,
+  deleteSingleStudentFromBD
 };
