@@ -114,6 +114,7 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>({
     virtuals:true,
   }
 });
+
 studentSchema.methods.isUserExists = async function (id: string) {
   const existingUser = await Student.findOne({ id });
   return existingUser;
@@ -150,7 +151,7 @@ studentSchema.pre('aggregate', function (next) {
 //     virtuals:true,
 //   }
 // }
-// মডেলে firstBracket এর আগে না বসাও
+// মডেলে firstBracket এর আগে বসাও
 studentSchema.virtual("Fullname").get(function () {
   return (
     `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`

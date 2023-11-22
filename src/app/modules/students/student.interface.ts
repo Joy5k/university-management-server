@@ -37,6 +37,9 @@ export type TStudent = {
   isActive: 'active' | 'blocked';
   isDeleted:boolean
 };
+
+
+
 export type StudentMethods = {
   isUserExists(id: string): Promise<TStudent | null>;
 };

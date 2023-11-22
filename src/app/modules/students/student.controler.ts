@@ -31,6 +31,7 @@ const createStudent = async (req: Request, res: Response) => {
       Result: error,
     });  }
 };
+
 const getAllStudents = async (req: Request, res: Response) => {
   try {
     const result = await StudentServices.getAllStudentFromDB();
