@@ -2,8 +2,6 @@ import { Student } from '../student.model';
 import { TStudent } from './student.interface';
 
 const createStudentInToDB = async (studentData: TStudent) => {
-  // const result = await Student.create(student);
-  // return result;
   const student = new Student(studentData)// create an instance
 
   if (await student.isUserExists(studentData.id)) {
