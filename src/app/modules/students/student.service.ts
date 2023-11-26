@@ -1,16 +1,5 @@
-import { Student } from '../student.model';
-import { TStudent } from './student.interface';
+import { Student } from './student.model';
 
-const createStudentInToDB = async (studentData: TStudent) => {
-  const student = new Student(studentData)// create an instance
-
-  if (await student.isUserExists(studentData.id)) {
-    throw new Error("User ALready Exists")
-  }
-  const result = await student.save();
-  return result;
-
-};
 const getAllStudentFromDB = async () => {
   //নিচে await  এর পরে মডেলকে কল করতে হবে। কেননা মডেলের উপর ভিত্তি করেই ডাটা ক্রিয়েট বা
   //গেট করবে
@@ -26,12 +15,11 @@ const getSingleStudentFromBD = async (id: string) => {
 const deleteSingleStudentFromBD = async (id: string) => {
   //নিচে await  এর পরে মডেলকে কল করতে হবে। কেননা মডেলের উপর ভিত্তি করেই ডাটা ক্রিয়েট বা
   //গেট করবে
-  const result = await Student.updateOne({ id },{isDeleted:true});
+  const result = await Student.updateOne({ id }, { isDeleted: true });
   return result;
 };
 export const StudentServices = {
-  createStudentInToDB,
   getAllStudentFromDB,
   getSingleStudentFromBD,
-  deleteSingleStudentFromBD
+  deleteSingleStudentFromBD,
 };
