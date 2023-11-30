@@ -111,6 +111,11 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>(
     },
     isDeleted: {
       type: Boolean,
+      default:false,
+    },
+    academicDepartment: {
+        type: Schema.Types.ObjectId,
+        ref:"AcademicDepartment"
     },
   },
   {
@@ -120,7 +125,7 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>(
   },
 );
 
-studentSchema.methods.isUserExists = async function (id: string) {
+ studentSchema.methods.isUserExists = async function (id: string) {
   const existingUser = await Student.findOne({ id });
   return existingUser;
 };

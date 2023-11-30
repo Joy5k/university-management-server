@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { AcademicSemesterRoute } from "../modules/academicSemester/academicSemester.route";
-import { StudentRoutes } from "../modules/students/student.route";
 import { UserRoutes } from "../modules/user/user.route";
 import { AcademicFacultyRoutes } from "../modules/academicFaculty/academicFaculty.route";
 import { AcademicDepartmentRoutes } from "../modules/academicDepartment/academicDepartment.route";
+import { StudentRoutes } from "../modules/students/student.route";
 
 
 const router=Router()

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const UserNameValidationSchema = z.object({
+const CreateUserNameValidationSchema = z.object({
   firstName: z
     .string()
     .min(1)
@@ -12,7 +12,7 @@ const UserNameValidationSchema = z.object({
   lastName: z.string(),
 });
 
-const GuardianValidationSchema = z.object({
+const CreateGuardianValidationSchema = z.object({
   fatherName: z.string(),
   fatherOccupation: z.string(),
   fatherContactNo: z.string(),
@@ -21,7 +21,7 @@ const GuardianValidationSchema = z.object({
   motherContactNo: z.string(),
 });
 
-const LocalGuardianValidationSchema = z.object({
+const CreateLocalGuardianValidationSchema = z.object({
   name: z.string(),
   occupation: z.string(),
   contactNo: z.string(),
@@ -32,7 +32,7 @@ export const createStudentValidationSchema = z.object({
   body: z.object({
     password:z.string().max(20),
     student: z.object({
-      name: UserNameValidationSchema,
+      name: CreateUserNameValidationSchema,
     gender: z.enum(['male', 'female', 'other']),
     dateOfBirth: z.string().optional(),
     email: z.string().email(),
@@ -43,8 +43,29 @@ export const createStudentValidationSchema = z.object({
       .optional(),
     presentAddress: z.string(),
     permanentAddress: z.string(),
-    guardian: GuardianValidationSchema,
-    localGuardian: LocalGuardianValidationSchema,
+    guardian: CreateGuardianValidationSchema,
+    localGuardian: CreateLocalGuardianValidationSchema,
+    admissionSemester:z.string(),
+    profileImg: z.string().optional(),
+    })
+  })
+})
+export const updateStudentValidationSchema = z.object({
+  body: z.object({
+    student: z.object({
+      name: CreateUserNameValidationSchema.optional(),
+    gender: z.enum(['male', 'female', 'other']).optional(),
+    dateOfBirth: z.string().optional(),
+    email: z.string().email().optional(),
+    contactNo: z.string().optional(),
+    emergencyContactNo: z.string().optional(),
+    bloodGroup: z
+      .enum(['A+', 'B+', 'AB+', 'O+', '-A', '-B', '-AB', '-O'])
+      .optional(),
+    presentAddress: z.string().optional(),
+    permanentAddress: z.string().optional(),
+    guardian: CreateGuardianValidationSchema.optional(),
+    localGuardian: CreateLocalGuardianValidationSchema.optional(),
     admissionSemester:z.string(),
     profileImg: z.string().optional(),
     })
@@ -52,6 +73,6 @@ export const createStudentValidationSchema = z.object({
 })
  
 export const StudentValidations = {
-   createStudentValidationSchema
-
+   createStudentValidationSchema,
+   updateStudentValidationSchema
 };
