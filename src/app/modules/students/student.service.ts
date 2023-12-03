@@ -5,10 +5,19 @@ import httpStatus from 'http-status';
 import { User } from '../user/user.model';
 import { TStudent } from './student.interface';
 
-const getAllStudentFromDB = async () => {
+const getAllStudentFromDB = async (query:Record<string,unknown>) => {
   //নিচে await  এর পরে মডেলকে কল করতে হবে। কেননা মডেলের উপর ভিত্তি করেই ডাটা ক্রিয়েট বা
   //গেট করবে
-  const result = await Student.find().populate("admissionSemester").populate({
+  let searchTerm=""
+  if (query?.searchTerm) {
+    searchTerm = query.searchTerm as string;
+  }
+console.log(query);
+  const result = await Student.find({
+    $or: ['email', 'name.firstName', 'name.lastName','gender'].map((field) => ({
+      [field]:{ $regex: searchTerm, $options: 'i' },
+    }))
+  }).populate("admissionSemester").populate({
     path: 'academicDepartment',
     populate: {
       path: "academicFaculty"
