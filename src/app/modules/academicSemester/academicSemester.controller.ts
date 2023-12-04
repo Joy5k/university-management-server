@@ -13,7 +13,9 @@ const createAcademicSemester = async (
   try {
     //   const { password, student: StudentData } = req.body;
 
-      const result = await AcademicSemesterService.createAcademicSemesterIntoDB(req.body);
+    const result = await AcademicSemesterService.createAcademicSemesterIntoDB(
+      req.body,
+    );
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
@@ -64,11 +66,9 @@ const updateAcademicSemester = catchAsync(async (req, res) => {
   });
 });
 
-
 export const AcademicSemesterController = {
   createAcademicSemester,
   getSingleAcademicSemester,
   updateAcademicSemester,
-  getAllAcademicSemesters
-  
+  getAllAcademicSemesters,
 };

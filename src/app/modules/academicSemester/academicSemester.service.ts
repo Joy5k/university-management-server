@@ -6,7 +6,7 @@ import { AcademicSemester } from './academicSemester.model';
 
 const createAcademicSemesterIntoDB = async (payload: TAcademicSemester) => {
   if (academicSemesterNameCodeMapper[payload.name] !== payload.code) {
-    throw new AppError(httpStatus.NOT_FOUND,'Invalid semester code');
+    throw new AppError(httpStatus.NOT_FOUND, 'Invalid semester code');
   }
 
   const result = await AcademicSemester.create(payload);
@@ -23,25 +23,25 @@ const getSingleAcademicSemesterFromDB = async (id: string) => {
   return result;
 };
 const updateAcademicSemesterIntoDB = async (
-    id: string,
-    payload: Partial<TAcademicSemester>,
-  ) => {
-    if (
-      payload.name &&
-      payload.code &&
-      academicSemesterNameCodeMapper[payload.name] !== payload.code
-    ) {
-      throw new AppError(httpStatus.NOT_FOUND,'Invalid Semester Code');
-    }
-  
-    const result = await AcademicSemester.findOneAndUpdate({ _id: id }, payload, {
-      new: true,
-    });
-    return result;
-  };
+  id: string,
+  payload: Partial<TAcademicSemester>,
+) => {
+  if (
+    payload.name &&
+    payload.code &&
+    academicSemesterNameCodeMapper[payload.name] !== payload.code
+  ) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Invalid Semester Code');
+  }
+
+  const result = await AcademicSemester.findOneAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
+  return result;
+};
 export const AcademicSemesterService = {
-    createAcademicSemesterIntoDB,
-    getAllAcademicSemestersFromDB,
-    getSingleAcademicSemesterFromDB,
-    updateAcademicSemesterIntoDB
+  createAcademicSemesterIntoDB,
+  getAllAcademicSemestersFromDB,
+  getSingleAcademicSemesterFromDB,
+  updateAcademicSemesterIntoDB,
 };

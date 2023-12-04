@@ -13,8 +13,14 @@ router.post(
   AcademicDepartmentController.createAcademicDepartment,
 );
 
-router.get('/:departmentId', AcademicDepartmentController.getSingleAcademicDepartment);
-router.delete('/:departmentId', AcademicDepartmentController.deleteAcademicDepartment);
+router.get(
+  '/:departmentId',
+  AcademicDepartmentController.getSingleAcademicDepartment,
+);
+router.delete(
+  '/:departmentId',
+  AcademicDepartmentController.deleteAcademicDepartment,
+);
 
 router.patch(
   '/:departmentId',

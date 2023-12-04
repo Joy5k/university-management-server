@@ -1,38 +1,40 @@
-import { TAcademicDepartment } from "./academicDepartment.interface";
-import { AcademicDepartment } from "./academicDepartment.model";
+import { TAcademicDepartment } from './academicDepartment.interface';
+import { AcademicDepartment } from './academicDepartment.model';
 
-const createAcademicDepartmentIntoDB = async(payload:TAcademicDepartment) => {
-    const result = await AcademicDepartment.create(payload);
-    return result;
-}
-const getAllAcademicDepartmentFromDB = async() => {
-    const result = await AcademicDepartment.find().populate('academicFaculty')
-    return result
-}
-const getSingleAcademicDepartmentFromDB = async (id:string) => {
-    const result = await AcademicDepartment.findOne( {_id:id} ).populate('academicFaculty')
-    return result
-}
+const createAcademicDepartmentIntoDB = async (payload: TAcademicDepartment) => {
+  const result = await AcademicDepartment.create(payload);
+  return result;
+};
+const getAllAcademicDepartmentFromDB = async () => {
+  const result = await AcademicDepartment.find().populate('academicFaculty');
+  return result;
+};
+const getSingleAcademicDepartmentFromDB = async (id: string) => {
+  const result = await AcademicDepartment.findOne({ _id: id }).populate(
+    'academicFaculty',
+  );
+  return result;
+};
 
 const updateAcademicDepartmentIntoDB = async (
-    id: string,
-    payload: Partial<TAcademicDepartment>,
-  ) => {
-    const result = await AcademicDepartment.findOneAndUpdate(
-        { _id: id },
-        payload,
-        { new: true, }
-    );
-    return result;
-  };
+  id: string,
+  payload: Partial<TAcademicDepartment>,
+) => {
+  const result = await AcademicDepartment.findOneAndUpdate(
+    { _id: id },
+    payload,
+    { new: true },
+  );
+  return result;
+};
 const deleteAcademicDepartmentFromDB = async (id: string) => {
-    const result =await AcademicDepartment.deleteOne({ id })
-    return result
-}
+  const result = await AcademicDepartment.deleteOne({ id });
+  return result;
+};
 export const AcademicDepartmentServices = {
-    createAcademicDepartmentIntoDB,
-    getAllAcademicDepartmentFromDB,
-    getSingleAcademicDepartmentFromDB,
-    updateAcademicDepartmentIntoDB,
-    deleteAcademicDepartmentFromDB
-}
+  createAcademicDepartmentIntoDB,
+  getAllAcademicDepartmentFromDB,
+  getSingleAcademicDepartmentFromDB,
+  updateAcademicDepartmentIntoDB,
+  deleteAcademicDepartmentFromDB,
+};

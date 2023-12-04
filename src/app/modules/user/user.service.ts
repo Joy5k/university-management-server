@@ -16,21 +16,22 @@ const createStudentInToDB = async (password: string, payload: TStudent) => {
 
   userData.role = 'student';
 
-
   //find academic semester info
-  const admissionSemester = await AcademicSemester.findById(payload.admissionSemester);
-  if(!admissionSemester){
-    throw new AppError(httpStatus.NOT_FOUND,"Admission semester not found")
+  const admissionSemester = await AcademicSemester.findById(
+    payload.admissionSemester,
+  );
+  if (!admissionSemester) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Admission semester not found');
   }
-  
-  const session=await mongoose.startSession()
-  try {
-   session.startTransaction()
-  userData.id = await generateStudentId(admissionSemester);
 
-  const newUser = await User.create([userData],{session});
+  const session = await mongoose.startSession();
+  try {
+    session.startTransaction();
+    userData.id = await generateStudentId(admissionSemester);
+
+    const newUser = await User.create([userData], { session });
     if (!newUser.length) {
-    throw new AppError(httpStatus.BAD_REQUEST,"Failed to create user")
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create user');
     }
 
     payload.id = newUser[0].id;
@@ -39,16 +40,15 @@ const createStudentInToDB = async (password: string, payload: TStudent) => {
 
     const newStudent = await Student.create([payload], { session });
     if (!newStudent.length) {
-      throw new AppError(httpStatus.BAD_REQUEST,"Failed to create student")
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create student');
     }
-    await session.commitTransaction()
-    await session.endSession()
+    await session.commitTransaction();
+    await session.endSession();
     return newStudent;
-  
-} catch (error) {
-    await session.abortTransaction()
-    await session.endSession()
-    throw new Error("Failed to create User")
+  } catch (error) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new Error('Failed to create User');
   }
 };
 export const UserService = {

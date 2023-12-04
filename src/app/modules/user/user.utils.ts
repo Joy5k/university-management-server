@@ -30,7 +30,7 @@ export const generateStudentId = async (payload: TAcademicSemester) => {
   // 2030 01 0001
   const lastStudentSemesterCode = lastStudentId?.substring(4, 6); //01;
   const lastStudentYear = lastStudentId?.substring(0, 4); // 2030
-  const currentSemesterCode = payload.code;//01
+  const currentSemesterCode = payload.code; //01
   const currentYear = payload.year;
 
   if (

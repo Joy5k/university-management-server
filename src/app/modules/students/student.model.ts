@@ -107,15 +107,15 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>(
     profileImg: { type: String },
     admissionSemester: {
       type: Schema.Types.ObjectId,
-      ref: 'AcademicSemester'
+      ref: 'AcademicSemester',
     },
     isDeleted: {
       type: Boolean,
-      default:false,
+      default: false,
     },
     academicDepartment: {
-        type: Schema.Types.ObjectId,
-        ref:"AcademicDepartment"
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicDepartment',
     },
   },
   {
@@ -125,7 +125,7 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>(
   },
 );
 
- studentSchema.methods.isUserExists = async function (id: string) {
+studentSchema.methods.isUserExists = async function (id: string) {
   const existingUser = await Student.findOne({ id });
   return existingUser;
 };
@@ -152,7 +152,7 @@ studentSchema.pre('aggregate', function (next) {
 // }
 // মডেলে firstBracket এর আগে বসাও
 studentSchema.virtual('Fullname').get(function () {
-  return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
+  return `${this?.name?.firstName} ${this?.name?.middleName} ${this?.name?.lastName}`;
 });
 
 export const Student = model<TStudent, StudentModel>('Student', studentSchema);

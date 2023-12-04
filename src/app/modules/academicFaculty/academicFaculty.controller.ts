@@ -1,4 +1,3 @@
-
 import { NextFunction, Request, Response } from 'express';
 import sendResponse from '../../utils/sendResponse';
 import httpStatus from 'http-status';
@@ -13,7 +12,9 @@ const createAcademicFaculty = async (
   try {
     //   const { password, student: StudentData } = req.body;
 
-      const result = await AcademicFacultyServices.createAcademicFacultyIntoDB(req.body);
+    const result = await AcademicFacultyServices.createAcademicFacultyIntoDB(
+      req.body,
+    );
 
     sendResponse(res, {
       statusCode: httpStatus.OK,
@@ -25,17 +26,17 @@ const createAcademicFaculty = async (
     next(error);
   }
 };
-const getAllAcademicFaculties = catchAsync(async (req, res,next) => {
+const getAllAcademicFaculties = catchAsync(async (req, res, next) => {
   try {
     const result = await AcademicFacultyServices.getAllAcademicFacultyFromDB();
-  sendResponse(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: 'Academic semesters are retrieved successfully',
-    data: result,
-  });
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Academic semesters are retrieved successfully',
+      data: result,
+    });
   } catch (error) {
-    next(error)
+    next(error);
   }
 });
 
@@ -53,25 +54,23 @@ const getSingleAcademicFaculty = catchAsync(async (req, res) => {
 });
 
 const updateAcademicFaculty = catchAsync(async (req, res) => {
-    const { facultyId } = req.params;
-    const result = await AcademicFacultyServices.updateAcademicFacultyIntoDB(
-      facultyId,
-      req.body,
-    );
-  
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: 'Academic faculty is updated succesfully',
-      data: result,
-    });
-});
+  const { facultyId } = req.params;
+  const result = await AcademicFacultyServices.updateAcademicFacultyIntoDB(
+    facultyId,
+    req.body,
+  );
 
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Academic faculty is updated succesfully',
+    data: result,
+  });
+});
 
 export const AcademicFacultyController = {
   createAcademicFaculty,
   getAllAcademicFaculties,
   updateAcademicFaculty,
-  getSingleAcademicFaculty
-  
+  getSingleAcademicFaculty,
 };
