@@ -75,7 +75,7 @@ const getAllStudentFromDB = async (query: Record<string, unknown>) => {
 const getSingleStudentFromBD = async (id: string) => {
   //নিচে await  এর পরে মডেলকে কল করতে হবে। কেননা মডেলের উপর ভিত্তি করেই ডাটা ক্রিয়েট বা
   //গেট করবে
-  const result = await Student.findOne({ id }).populate({
+  const result = await Student.findById(id).populate({
     path: 'academicDepartment',
     populate: {
       path: "academicFaculty"
