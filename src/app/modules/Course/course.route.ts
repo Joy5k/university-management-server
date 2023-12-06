@@ -7,11 +7,11 @@ const router = express.Router();
 router.post('/create-course',validateRequest(courseValidation.createCourseValidationSchema),CourseController.createCourse)
 router.get('/:id', CourseController.getSingleCourse);
 
-// router.patch(
-//   '/:id',
-//   validateRequest(updateFacultyValidationSchema),
-//   CourseController.updateFaculty,
-// );
+router.patch(
+  '/:id',
+  validateRequest(courseValidation.updateCourseValidationSchema),
+  CourseController.updateCourse,
+);
 
 router.delete('/:id', CourseController.deleteCourse);
 

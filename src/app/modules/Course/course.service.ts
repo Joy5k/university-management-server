@@ -16,16 +16,20 @@ const getAllCoursesFromDB = async (query:Record<string,unknown>) => {
     return result
 }
 const getSingleCourseFromDB = async (id: string) => {
-    const result = await Course.findById(id)
+    const result = await Course.findById(id).populate('preRequisiteCourses.course')
     return result
 }
 const deleteCourseIntoDB = async (id: string) => {
     const result=await Course.findByIdAndUpdate(id,{isDeleted:true},{new:true})
     return result
 }
+const updateCourseIntoDB = async (id: string, paylod: Record<string, unknown>) => {
+    
+}
 export const CourseServices = {
  createCourseIntoDB,
     getAllCoursesFromDB,
     getSingleCourseFromDB,
-    deleteCourseIntoDB
+    deleteCourseIntoDB,
+    updateCourseIntoDB
 }
