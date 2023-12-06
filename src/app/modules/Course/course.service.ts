@@ -23,8 +23,20 @@ const deleteCourseIntoDB = async (id: string) => {
     const result=await Course.findByIdAndUpdate(id,{isDeleted:true},{new:true})
     return result
 }
-const updateCourseIntoDB = async (id: string, paylod: Record<string, unknown>) => {
-    
+const updateCourseIntoDB = async (id: string, payload:Partial<TCourse>) => {
+    const { preRequisiteCourses, ...courseRemainingData } = payload;
+    const result = await Course.findByIdAndUpdate(id, courseRemainingData, {
+        new: true,
+        runValidators:true
+    })
+    if (preRequisiteCourses && preRequisiteCourses.length > 0) { 
+        const deletePreRequisites = preRequisiteCourses.filter(el=>el.course&&el.isDeleted).map(el=>el.course)
+        const deletePreRequisitesCourses = await Course.findByIdAndUpdate(id, {
+        $pull:{preRequisiteCourses:{course:{$in:deletePreRequisites}}}
+    })
+    }
+
+    return result
 }
 export const CourseServices = {
  createCourseIntoDB,
