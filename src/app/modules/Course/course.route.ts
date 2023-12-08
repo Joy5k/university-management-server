@@ -4,7 +4,8 @@ import validateRequest from '../../middlewares/validationRequest';
 import { courseValidation } from './course.validation';
 
 const router = express.Router();
-router.post('/create-course',validateRequest(courseValidation.createCourseValidationSchema),CourseController.createCourse)
+router.post('/create-course', validateRequest(courseValidation.createCourseValidationSchema), CourseController.createCourse)
+
 router.get('/:id', CourseController.getSingleCourse);
 
 router.patch(
@@ -14,7 +15,8 @@ router.patch(
 );
 
 router.delete('/:id', CourseController.deleteCourse);
-router.put('/courseId/assign-faculties',CourseController.assignFacultiesWithCourse)
+router.put('/courseId/assign-faculties',validateRequest(courseValidation.facultyWithCourseValidationSchema),CourseController.assignFacultiesWithCourse)
+router.delete('/courseId/remove-faculties',validateRequest(courseValidation.facultyWithCourseValidationSchema),CourseController.removeFacultiesFromCourse)
 router.get('/', CourseController.getAllCourses);
 
 export const CourseRoutes = router;
