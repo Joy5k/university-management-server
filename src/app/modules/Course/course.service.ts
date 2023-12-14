@@ -31,9 +31,6 @@ const updateCourseIntoDB = async (id: string, payload:Partial<TCourse>) => {
     const session = await mongoose.startSession()
     try {
         session.startTransaction()
-
-
-
         const updateBasicCourseInfo = await Course.findByIdAndUpdate(id, courseRemainingData, {
             new: true,
             runValidators: true,
@@ -53,7 +50,8 @@ const updateCourseIntoDB = async (id: string, payload:Partial<TCourse>) => {
             const newRequisite = preRequisiteCourses.filter(el => el.course && !el.isDeleted)
             const newPreRequisite = await Course.findByIdAndUpdate(id, {
                 $addToSet: { preRequisiteCourses: { $each: newRequisite } }
-            }, { new: true, runValidators: true, session })
+            },
+                { new: true, runValidators: true, session })
             if (!newPreRequisite) {
                 throw new AppError(httpStatus.BAD_REQUEST, "Failed to update basic course info")
             }
