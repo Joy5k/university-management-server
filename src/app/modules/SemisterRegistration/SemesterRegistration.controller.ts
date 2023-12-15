@@ -8,17 +8,17 @@ const createSemesterRegistration = catchAsync(async (req, res) => {
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'Faculty is retrieved successfully',
+        message: 'Semester Registration is created successfully',
         data: result,
       });
 })
 const getAllSemesterRegistration=catchAsync(async(req,res)=>
 {
-    const result = await semesterRegistrationServices.getAllSemesterRegistrationFromDB()
+    const result = await semesterRegistrationServices.getAllSemesterRegistrationFromDB(req.query)
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'Faculty is retrieved successfully',
+        message: 'Semester Registration retrieved successfully',
         data: result,
       });
 })
@@ -29,17 +29,17 @@ const getSingleSemesterRegistration = catchAsync(async (req, res) => {
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'Faculty is retrieved successfully',
+        message: 'Semester Registration retrieved successfully',
         data: result,
       });
 })
 const updateSemesterRegistration = catchAsync(async (req, res) => {
     const { id } = req.params;
-    const result = await semesterRegistrationServices.updateSemesterRegistrationFromDB(id)
+    const result = await semesterRegistrationServices.updateSemesterRegistrationFromDB(id,req.body)
     sendResponse(res, {
         statusCode: httpStatus.OK,
         success: true,
-        message: 'Faculty is retrieved successfully',
+        message: 'Semester Registered update successfully',
         data: result,
       });
  })
