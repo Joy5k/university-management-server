@@ -1,35 +1,31 @@
 import express from 'express';
-import validateRequest from '../../middlewares/validationRequest';
+import validateRequest from '../../middlewares/validateRequest';
+import { AcademicDepartmentControllers } from './academicDepartment.controller';
 import { AcademicDepartmentValidation } from './academicDepartment.validation';
-import { AcademicDepartmentController } from './academicDepartment.controller';
 
 const router = express.Router();
 
 router.post(
   '/create-academic-department',
   // validateRequest(
-  //   AcademicDepartmentValidation.CreateAcademicDepartmentValidationSchema,
+  //   AcademicDepartmentValidation.createAcademicDepartmentValidationSchema,
   // ),
-  AcademicDepartmentController.createAcademicDepartment,
+  AcademicDepartmentControllers.createAcademicDepartmemt,
 );
 
 router.get(
   '/:departmentId',
-  AcademicDepartmentController.getSingleAcademicDepartment,
-);
-router.delete(
-  '/:departmentId',
-  AcademicDepartmentController.deleteAcademicDepartment,
+  AcademicDepartmentControllers.getSingleAcademicDepartment,
 );
 
 router.patch(
   '/:departmentId',
   validateRequest(
-    AcademicDepartmentValidation.UpdateAcademicDepartmentValidationSchema,
+    AcademicDepartmentValidation.updateAcademicDepartmentValidationSchema,
   ),
-  AcademicDepartmentController.updateAcademicDepartment,
+  AcademicDepartmentControllers.updateAcademicDeartment,
 );
 
-router.get('/', AcademicDepartmentController.getAllAcademicDepartment);
+router.get('/', AcademicDepartmentControllers.getAllAcademicDepartments);
 
 export const AcademicDepartmentRoutes = router;

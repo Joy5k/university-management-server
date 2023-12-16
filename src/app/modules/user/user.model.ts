@@ -1,26 +1,25 @@
-import { Schema, model } from 'mongoose';
-import { TUser } from './user.interface';
-import config from '../../config';
 import bcrypt from 'bcrypt';
-
+import { Schema, model } from 'mongoose';
+import config from '../../config';
+import { TUser } from './user.interface';
 const userSchema = new Schema<TUser>(
   {
     id: {
       type: String,
-      require: true,
+      required: true,
       unique: true,
     },
     password: {
       type: String,
-      require: true,
+      required: true,
     },
     needsPasswordChange: {
       type: Boolean,
-      require: true,
+      default: true,
     },
     role: {
       type: String,
-      enum: ['admin', 'student', 'faculty'],
+      enum: ['student', 'faculty', 'admin'],
     },
     status: {
       type: String,
@@ -36,9 +35,7 @@ const userSchema = new Schema<TUser>(
     timestamps: true,
   },
 );
-// নিচে pre function দিয়ে এটা বোঝাচ্ছে ডাটা ফ্রন্টেন্ড থেকে রিছিফ করা হইছে কিন্তু এখনো ডাটা
-// বেজে  এখনো সেভ হয়নায় এমতাবস্থায়  আছে। এই সুযোগ কাজে লাগিয়ে  ইউজারের কাছে থেকে
-// password নিয়ে সেই password  database এ hashing করে সেভ করেছি।
+
 userSchema.pre('save', async function (next) {
   // eslint-disable-next-line @typescript-eslint/no-this-alias
   const user = this; // doc
@@ -55,4 +52,5 @@ userSchema.post('save', function (doc, next) {
   doc.password = '';
   next();
 });
+
 export const User = model<TUser>('User', userSchema);

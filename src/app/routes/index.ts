@@ -1,16 +1,18 @@
 import { Router } from 'express';
-import { AcademicSemesterRoute } from '../modules/academicSemester/academicSemester.route';
-import { UserRoutes } from '../modules/user/user.route';
-import { AcademicFacultyRoutes } from '../modules/academicFaculty/academicFaculty.route';
-import { AcademicDepartmentRoutes } from '../modules/academicDepartment/academicDepartment.route';
-import { StudentRoutes } from '../modules/students/student.route';
-import { FacultyRoutes } from '../modules/Faculty/faculty.route';
 import { AdminRoutes } from '../modules/Admin/admin.route';
 import { CourseRoutes } from '../modules/Course/course.route';
-import { semesterRegistrationRouter } from '../modules/SemisterRegistration/SemesterRegistration.route';
+import { FacultyRoutes } from '../modules/Faculty/faculty.route';
+import { offeredCourseRoutes } from '../modules/OfferedCourse/OfferedCourse.route';
+import { AcademicDepartmentRoutes } from '../modules/academicDepartment/academicDepartment.route';
+import { AcademicFacultyRoutes } from '../modules/academicFaculty/academicFaculty.route';
+import { AcademicSemesterRoutes } from '../modules/academicSemester/academicSemester.route';
+import { semesterRegistrationRoutes } from '../modules/semesterRegistration/semesterRegistration.route';
+import { StudentRoutes } from '../modules/student/student.route';
+import { UserRoutes } from '../modules/user/user.route';
 
 const router = Router();
-const moduleRoute = [
+
+const moduleRoutes = [
   {
     path: '/users',
     route: UserRoutes,
@@ -24,29 +26,35 @@ const moduleRoute = [
     route: FacultyRoutes,
   },
   {
-    path: '/course',
-    route: CourseRoutes,
-  },
-  {
     path: '/admins',
     route: AdminRoutes,
   },
   {
     path: '/academic-semesters',
-    route: AcademicSemesterRoute,
+    route: AcademicSemesterRoutes,
   },
   {
-    path: '/academic-faculty',
+    path: '/academic-faculties',
     route: AcademicFacultyRoutes,
   },
   {
-    path: '/academic-department',
+    path: '/academic-departments',
     route: AcademicDepartmentRoutes,
   },
   {
-    path: '/semester-registration',
-    route: semesterRegistrationRouter
-  }
+    path: '/courses',
+    route: CourseRoutes,
+  },
+  {
+    path: '/semester-registrations',
+    route: semesterRegistrationRoutes,
+  },
+  {
+    path: '/offered-courses',
+    route: offeredCourseRoutes,
+  },
 ];
-moduleRoute.forEach((route) => router.use(route.path, route.route));
+
+moduleRoutes.forEach((route) => router.use(route.path, route.route));
+
 export default router;

@@ -1,28 +1,28 @@
 import express from 'express';
+import validateRequest from '../../middlewares/validateRequest';
+import { AcademicFacultyControllers } from './academicFaculty.controller';
 import { AcademicFacultyValidation } from './academicFaculty.validation';
-import validateRequest from '../../middlewares/validationRequest';
-import { AcademicFacultyController } from './academicFaculty.controller';
 
 const router = express.Router();
 
 router.post(
   '/create-academic-faculty',
   validateRequest(
-    AcademicFacultyValidation.CreateAcademicFacultyValidationSchema,
+    AcademicFacultyValidation.createAcademicFacultyValidationSchema,
   ),
-  AcademicFacultyController.createAcademicFaculty,
+  AcademicFacultyControllers.createAcademicFaculty,
 );
 
-router.get('/:facultyId', AcademicFacultyController.getSingleAcademicFaculty);
+router.get('/:id', AcademicFacultyControllers.getSingleAcademicFaculty);
 
 router.patch(
-  '/:facultyId',
+  '/:id',
   validateRequest(
-    AcademicFacultyValidation.UpdateAcademicFacultyValidationSchema,
+    AcademicFacultyValidation.updateAcademicFacultyValidationSchema,
   ),
-  AcademicFacultyController.updateAcademicFaculty,
+  AcademicFacultyControllers.updateAcademicFaculty,
 );
 
-router.get('/', AcademicFacultyController.getAllAcademicFaculties);
+router.get('/', AcademicFacultyControllers.getAllAcademicFaculties);
 
 export const AcademicFacultyRoutes = router;
