@@ -41,9 +41,22 @@ const createAdmin = catchAsync(async (req, res) => {
     data: result,
   });
 });
+const getMe = catchAsync(async (req, res) => {
+  // }
+const {userId,role}=req.user//getting the user data after its verified check the module-19.8 if you have any dought
+  const result = await UserServices.getMe(userId,role);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'user retrieve successfully',
+    data: result,
+  });
+});
 
 export const UserControllers = {
   createStudent,
   createFaculty,
   createAdmin,
+  getMe
 };
