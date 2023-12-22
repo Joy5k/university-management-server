@@ -31,6 +31,7 @@ const createStudentIntoDB = async (file:any,password: string, payload: TStudent)
   userData.role = 'student';
   userData.email = payload.email;
 
+
   // find academic semester info
   const admissionSemester = await AcademicSemester.findById(
     payload.admissionSemester,
@@ -46,8 +47,9 @@ const createStudentIntoDB = async (file:any,password: string, payload: TStudent)
     session.startTransaction();
     //set  generated id
     userData.id = await generateStudentId(admissionSemester);
-    const imageName=`${userData.id}${payload?.name?.firstName}`
-    sendImageToCloudinary(imageName,file?.path)
+    const imageName = `${userData.id}${payload?.name?.firstName}`
+    const path = file?.path;
+  const {secure_url} = await sendImageToCloudinary(imageName,path)
 
 
     // create a user (transaction-1)
@@ -60,6 +62,7 @@ const createStudentIntoDB = async (file:any,password: string, payload: TStudent)
     // set id , _id as user
     payload.id = newUser[0].id;
     payload.user = newUser[0]._id; //reference _id
+    payload.profileImg=secure_url
 
     // create a student (transaction-2)
 
