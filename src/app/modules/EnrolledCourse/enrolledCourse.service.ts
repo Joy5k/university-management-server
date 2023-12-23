@@ -21,7 +21,6 @@ const createEnrolledCourseIntoDB = async (
    * Step3: Check if the max credits exceed
    * Step4: Create an enrolled course
    */
-
   const { offeredCourse } = payload;
 
   const isOfferedCourseExists = await OfferedCourse.findById(offeredCourse);
