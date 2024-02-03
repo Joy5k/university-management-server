@@ -134,7 +134,7 @@ const createFacultyIntoDB = async (file:any,password: string, payload: TFaculty)
 
     //create a faculty
     if (!newUser.length) {
-      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create user');
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create faculty');
     }
     // set id , _id as user
     payload.id = newUser[0].id;
