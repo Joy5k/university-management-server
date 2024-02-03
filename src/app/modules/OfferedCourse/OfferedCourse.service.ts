@@ -1,14 +1,15 @@
+import { AcademicFaculty } from './../academicFaculty/academicFaculty.model';
+import { SemesterRegistration } from './../semesterRegistration/semesterRegistration.model';
 import httpStatus from 'http-status';
 import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../errors/AppError';
 import { Course } from '../Course/course.model';
 import { Faculty } from '../Faculty/faculty.model';
 import { AcademicDepartment } from '../academicDepartment/academicDepartment.model';
-import { AcademicFaculty } from '../academicFaculty/academicFaculty.model';
-import { SemesterRegistration } from '../semesterRegistration/semesterRegistration.model';
 import { TOfferedCourse } from './OfferedCourse.interface';
 import { OfferedCourse } from './OfferedCourse.model';
 import { hasTimeConflict } from './OfferedCourse.utils';
+import { Student } from '../student/student.model';
 
 const createOfferedCourseIntoDB = async (payload: TOfferedCourse) => {
   const {
@@ -138,9 +139,57 @@ const getAllOfferedCoursesFromDB = async (query: Record<string, unknown>) => {
     .paginate()
     .fields();
 
-  const result = await offeredCourseQuery.modelQuery;
-  return result;
+    const result = await offeredCourseQuery.modelQuery;
+    const meta=await offeredCourseQuery.countTotal()
+  return {
+    meta,
+    result
+
+  };
 };
+
+const getMyOfferedCoursesFromDB = async (userId: string) => {
+  const student = await Student.findOne({ id: userId })
+  if (!student) {
+    throw new AppError(httpStatus.NOT_FOUND,"User Is not found")
+  }
+
+  //find current ongoing semester
+  const currentOngoingRegistrationSemester = await SemesterRegistration.findOne({
+    status:"ONGOING"
+  })
+
+  if (!currentOngoingRegistrationSemester) {
+    throw new AppError(httpStatus.NOT_FOUND,"There is no ongoing semester registration")
+  }
+
+
+
+  const result = await OfferedCourse.aggregate([
+    {
+      $match: {
+        semesterRegistration: currentOngoingRegistrationSemester?._id,
+        academicFaculty: student.academicFaculty,
+        academicDepartment: student.academicDepartment,
+      },
+    },
+    {
+      $lookup: {
+        from: 'courses',
+        localField: 'course',
+        foreignField: '_id',
+        as: 'course',
+      },
+  }
+])
+
+
+
+  return result
+};
+
+
+
 
 const getSingleOfferedCourseFromDB = async (id: string) => {
   const offeredCourse = await OfferedCourse.findById(id);
@@ -250,6 +299,7 @@ const deleteOfferedCourseFromDB = async (id: string) => {
 export const OfferedCourseServices = {
   createOfferedCourseIntoDB,
   getAllOfferedCoursesFromDB,
+  getMyOfferedCoursesFromDB,
   getSingleOfferedCourseFromDB,
   deleteOfferedCourseFromDB,
   updateOfferedCourseIntoDB,
