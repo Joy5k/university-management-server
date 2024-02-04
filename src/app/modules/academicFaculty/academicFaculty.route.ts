@@ -26,6 +26,6 @@ router.patch(
   AcademicFacultyControllers.updateAcademicFaculty,
 );
 
-router.get('/', auth(), AcademicFacultyControllers.getAllAcademicFaculties);
+router.get('/', auth(USER_ROLE.admin,USER_ROLE.superAdmin,USER_ROLE.faculty), AcademicFacultyControllers.getAllAcademicFaculties);
 
 export const AcademicFacultyRoutes = router;
