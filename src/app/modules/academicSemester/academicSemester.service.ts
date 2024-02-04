@@ -32,7 +32,6 @@ const getAllAcademicSemestersFromDB = async (
 };
 
 const getSingleAcademicSemesterFromDB = async (id: string) => {
-  console.log(id);
   const result = await AcademicSemester.findById(id);
   return result;
 };
