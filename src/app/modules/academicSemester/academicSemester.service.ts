@@ -22,12 +22,12 @@ const getAllAcademicSemestersFromDB = async (
     .paginate()
     .fields();
 
-  const result = await academicSemesterQuery.modelQuery;
+  const data = await academicSemesterQuery.modelQuery;
   const meta = await academicSemesterQuery.countTotal();
 
   return {
     meta,
-    result,
+    data,
   };
 };
 
