@@ -8,13 +8,12 @@ import { TStudent } from './student.interface';
 import { Student } from './student.model';
 
 const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
- 
   const studentQuery = new QueryBuilder(
     Student.find()
       .populate('user')
       .populate('admissionSemester')
       .populate('academicDepartment academicFaculty'),
-     
+
     query,
   )
     .search(studentSearchableFields)
@@ -23,12 +22,12 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
     .paginate()
     .fields();
 
-    const meta = await studentQuery.countTotal();
-    const result = await studentQuery.modelQuery;
-    return {
-      meta,
-      result,
-    };
+  const meta = await studentQuery.countTotal();
+  const data = await studentQuery.modelQuery;
+  return {
+    meta,
+    data,
+  };
 };
 
 const getSingleStudentFromDB = async (id: string) => {
